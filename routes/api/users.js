@@ -43,33 +43,22 @@ router.post(`/profile/upload`, (req, res) => {
 
     db.query(sql, (e, r) => {
         // Get the file that was set to our field named "image"
-    const { image } = req.files;
+        const { image } = req.files;
 
-    // If no image submitted, exit
-    if (!image) return res.sendStatus(400);
+        // If no image submitted, exit
+        if (!image) return res.sendStatus(400);
 
-    // If does not have image mime type prevent from uploading
-    //if (/^image/.test(image.mimetype)) return res.sendStatus(400);
+        // If does not have image mime type prevent from uploading
+        //if (/^image/.test(image.mimetype)) return res.sendStatus(400);
 
-    // Move the uploaded image to our upload folder
-    console.log(r[0]);
-    image.mv(appDir + '/upload/' + r[0].id + `.webp`);
+        // Move the uploaded image to our upload folder
+        console.log(r[0]);
+        image.mv(appDir + '/upload/' + r[0].id + `.webp`);
 
-    // All good
-    res.send('/').status(200);
+        // All good
+        res.redirect(process.env.FRONTEND_HOST);
     })
 })
-
-router.get(`/upload/:id`, (req, res) => {
-    
-    let file = `../../upload/${req.params.id}`
-    let s = fs.createReadStream(file);
-    s.on('open', function () {
-        res.set('Content-Type', 'image/webp');
-        s.pipe(res);
-    });
-    
-});
 
 //GET user by authToken
 router.get("/:authToken", (req, res) => {
