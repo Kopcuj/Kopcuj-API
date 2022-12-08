@@ -1,10 +1,14 @@
 require('dotenv').config()
 
+const { dirname } = require('path');
+const appDir = dirname(require.main.filename);
+
 const express = require('express');
 const router = express.Router();
 
 const bcrypt = require('bcrypt');
 const crypto = require("crypto");
+const fs = require('fs');
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
@@ -32,6 +36,39 @@ router.get("/climbedHills", (req, res) => {
     let sql = `SELECT hills.*, hills_climbed.user FROM (hills JOIN hills_climbed ON hills.id = hills_climbed.hill) RIGHT JOIN users ON users.id = hills_climbed.user;`;
 
     db.query(sql, (e, r) => res.send(r));
+});
+
+router.post(`/profile/upload`, (req, res) => {
+    let sql = `SELECT id FROM users WHERE authToken='${req.cookies.authToken}';`;
+
+    db.query(sql, (e, r) => {
+        // Get the file that was set to our field named "image"
+    const { image } = req.files;
+
+    // If no image submitted, exit
+    if (!image) return res.sendStatus(400);
+
+    // If does not have image mime type prevent from uploading
+    //if (/^image/.test(image.mimetype)) return res.sendStatus(400);
+
+    // Move the uploaded image to our upload folder
+    console.log(r[0]);
+    image.mv(appDir + '/upload/' + r[0].id + `.webp`);
+
+    // All good
+    res.send('/').status(200);
+    })
+})
+
+router.get(`/upload/:id`, (req, res) => {
+    
+    let file = `../../upload/${req.params.id}`
+    let s = fs.createReadStream(file);
+    s.on('open', function () {
+        res.set('Content-Type', 'image/webp');
+        s.pipe(res);
+    });
+    
 });
 
 //GET user by authToken

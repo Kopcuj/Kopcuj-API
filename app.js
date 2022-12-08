@@ -1,5 +1,6 @@
 // app.js
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -19,9 +20,19 @@ const swaggerDocument = require('./swagger.json');
 app.use(cors({origin: true, credentials: true}));
 
 // Init Middleware
-app.use(express.json({extended: false}));
+// app.use(express.json({extended: false}));
+app.use(express.json())
 
 app.use(cookieParser());
+
+app.use(
+    fileUpload({
+        limits: {
+            fileSize: 10000000,
+        },
+        abortOnLimit: true,
+    })
+);
 
 // use Routes
 app.use('/api/users', users);
