@@ -38,6 +38,12 @@ router.get("/climbedHills", (req, res) => {
     db.query(sql, (e, r) => res.send(r));
 });
 
+router.post(`/update`, (req, res) => {
+    let sql = `UPDATE users SET name='${req.body.name}', description='${req.body.description}', isAdmin=${req.body.isAdmin}, isVerified='${req.body.isVerified}' WHERE id='${req.body.userId}';`;
+
+    db.query(sql, (e, r) =>{console.log(req.body.isVerified); res.sendStatus(200)});
+})
+
 router.post(`/profile/upload`, (req, res) => {
     let sql = `SELECT id FROM users WHERE authToken='${req.cookies.authToken}';`;
 
