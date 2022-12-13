@@ -41,7 +41,9 @@ router.get("/climbedHills", (req, res) => {
 router.post(`/update`, (req, res) => {
     let sql = `UPDATE users SET name='${req.body.name}', description='${req.body.description}', isAdmin=${req.body.isAdmin}, isVerified=${req.body.isVerified} WHERE id='${req.body.userId}';`;
 
-    db.query(sql, (e, r) =>{console.log(req.body.isVerified, e, r); res.sendStatus(200)});
+    db.query(sql, (e, r) => {
+        res.sendStatus(200)
+    });
 })
 
 router.post(`/profile/upload`, (req, res) => {
@@ -62,7 +64,7 @@ router.post(`/profile/upload`, (req, res) => {
         image.mv(appDir + '/upload/' + r[0].id + `.webp`);
 
         // All good
-        res.redirect(process.env.FRONTEND_HOST);
+        res.redirect(process.env.FRONTEND_HOST + 'profile');
     })
 })
 
