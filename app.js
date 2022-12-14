@@ -1,6 +1,5 @@
 // app.js
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -25,15 +24,6 @@ app.use(express.json())
 app.use('/upload', express.static('upload'))
 
 app.use(cookieParser());
-
-app.use(
-    fileUpload({
-        limits: {
-            fileSize: 10000000,
-        },
-        abortOnLimit: true,
-    })
-);
 
 // use Routes
 app.use('/api/users', users);

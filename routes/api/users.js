@@ -24,6 +24,19 @@ let mysql = require('mysql');
 let config = require('../../config/db.js');
 let db = mysql.createConnection(config);
 
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'upload/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    },
+})
+
+const upload = multer({ storage: storage })
+
 //GET all users
 router.get("/", (req, res) => {
     let sql = `SELECT * FROM users`;
@@ -46,26 +59,8 @@ router.post(`/update`, (req, res) => {
     });
 })
 
-router.post(`/profile/upload`, (req, res) => {
-    let sql = `SELECT id FROM users WHERE authToken='${req.cookies.authToken}';`;
-
-    db.query(sql, (e, r) => {
-        // Get the file that was set to our field named "image"
-        const { image } = req.files;
-
-        // If no image submitted, exit
-        if (!image) return res.sendStatus(400);
-
-        // If does not have image mime type prevent from uploading
-        //if (/^image/.test(image.mimetype)) return res.sendStatus(400);
-
-        // Move the uploaded image to our upload folder
-        console.log(r[0]);
-        image.mv(appDir + '/upload/' + r[0].id + `.webp`);
-
-        // All good
-        res.redirect(process.env.FRONTEND_HOST + 'profile');
-    })
+router.post(`/profile/upload`, upload.single('file'), (req, res) => {
+    res.sendStatus(200);
 })
 
 //GET user by authToken
