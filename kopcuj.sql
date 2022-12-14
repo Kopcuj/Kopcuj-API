@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2022 at 02:52 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Dec 14, 2022 at 05:13 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -54,7 +54,7 @@ CREATE TABLE `discussions_replies` (
   `id` int(11) NOT NULL,
   `discussion` int(11) NOT NULL,
   `user` int(11) NOT NULL,
-  `created` int(11) NOT NULL DEFAULT current_timestamp(),
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -63,11 +63,8 @@ CREATE TABLE `discussions_replies` (
 --
 
 INSERT INTO `discussions_replies` (`id`, `discussion`, `user`, `created`, `text`) VALUES
-(7, 7, 3, 2147483647, 'aaaaaa'),
-(8, 7, 3, 2147483647, 'aaaa'),
-(9, 7, 3, 2147483647, 'aha no'),
-(10, 7, 3, 2147483647, 'lm'),
-(11, 5, 3, 2147483647, 'Opravdu');
+(12, 5, 3, '2022-12-14 16:05:40', 'test'),
+(13, 5, 3, '2022-12-14 16:06:00', 'test2');
 
 -- --------------------------------------------------------
 
@@ -76,7 +73,7 @@ INSERT INTO `discussions_replies` (`id`, `discussion`, `user`, `created`, `text`
 --
 
 CREATE TABLE `discussions_replies_downvotes` (
-  `discussion` int(11) NOT NULL,
+  `reply` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `random` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -88,10 +85,17 @@ CREATE TABLE `discussions_replies_downvotes` (
 --
 
 CREATE TABLE `discussions_replies_upvotes` (
-  `discussion` int(11) NOT NULL,
+  `reply` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `random` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `discussions_replies_upvotes`
+--
+
+INSERT INTO `discussions_replies_upvotes` (`reply`, `user`, `random`) VALUES
+(5, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,13 +111,6 @@ CREATE TABLE `faults` (
   `created` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `faults`
---
-
-INSERT INTO `faults` (`id`, `user`, `hill`, `text`, `created`) VALUES
-(6, 3, 1, 'mrdko', '2022-11-27 13:38:18');
-
 -- --------------------------------------------------------
 
 --
@@ -123,8 +120,7 @@ INSERT INTO `faults` (`id`, `user`, `hill`, `text`, `created`) VALUES
 CREATE TABLE `faults_likes` (
   `id` int(11) NOT NULL,
   `user` int(11) NOT NULL,
-  `fault` int(11) NOT NULL,
-  `random` varchar(255) DEFAULT NULL
+  `fault` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -267,13 +263,13 @@ CREATE TABLE `hills_attributes` (
 --
 
 INSERT INTO `hills_attributes` (`hill`, `difficulty`, `path`, `stroller`, `parking`, `food`) VALUES
-(1, 2, 2, 2, 2, 2),
+(1, 2, 1, 1, 1, 1),
 (2, 0, 0, 0, 0, 0),
 (3, 0, 0, 0, 0, 0),
 (4, 0, 0, 0, 0, 0),
-(5, 0, 0, 0, 0, 0),
+(5, 7, 7, 7, 7, 7),
 (6, 0, 0, 0, 0, 0),
-(7, 0, 0, 0, 0, 0),
+(7, 1, 0, 0, 0, 1),
 (8, 0, 0, 0, 0, 0),
 (9, 0, 0, 0, 0, 0),
 (10, 0, 0, 0, 0, 0),
@@ -285,11 +281,11 @@ INSERT INTO `hills_attributes` (`hill`, `difficulty`, `path`, `stroller`, `parki
 (16, 0, 0, 0, 0, 0),
 (17, 0, 0, 0, 0, 0),
 (18, 0, 0, 0, 0, 0),
-(19, 0, 0, 0, 0, 0),
+(19, 0, 1, 0, 0, 0),
 (20, 0, 0, 0, 0, 0),
 (21, 0, 0, 0, 0, 0),
 (22, 0, 0, 0, 0, 0),
-(23, 0, 0, 0, 0, 0),
+(23, 12, 12, 12, 12, 12),
 (24, 0, 0, 0, 0, 0),
 (25, 0, 0, 0, 0, 0),
 (26, 0, 0, 0, 0, 0),
@@ -313,7 +309,7 @@ INSERT INTO `hills_attributes` (`hill`, `difficulty`, `path`, `stroller`, `parki
 (44, 0, 0, 0, 0, 0),
 (45, 0, 0, 0, 0, 0),
 (46, 0, 0, 0, 0, 0),
-(47, 0, 0, 0, 0, 0),
+(47, 0, 1, 1, 1, 1),
 (48, 0, 0, 0, 0, 0),
 (49, 0, 0, 0, 0, 0),
 (50, 0, 0, 0, 0, 0),
@@ -381,7 +377,9 @@ CREATE TABLE `hills_climbed` (
 INSERT INTO `hills_climbed` (`id`, `hill`, `user`) VALUES
 (2, 1, 3),
 (3, 49, 4),
-(4, 1, 4);
+(4, 1, 4),
+(5, 1, 5),
+(6, 47, 5);
 
 -- --------------------------------------------------------
 
@@ -403,8 +401,13 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `hill`, `user`, `added`, `stars`, `text`) VALUES
-(1, 1, 3, '2022-11-25 07:18:24', 2, 'aaaaa'),
-(15, 1, 4, '2022-11-26 11:07:48', 1, 'fffff');
+(1, 1, 3, '2022-11-25 07:18:24', 2, 'N2jaky text aspon'),
+(15, 1, 4, '2022-11-26 11:07:48', 1, 'fffff'),
+(21, 23, 3, '2022-11-30 16:25:23', 1, ''),
+(22, 7, 3, '2022-11-30 16:50:22', 0, ''),
+(23, 19, 3, '2022-11-30 16:51:15', 4, ''),
+(24, 1, 5, '2022-12-14 15:41:36', 4, 'slo to'),
+(25, 47, 5, '2022-12-14 15:42:00', 5, 'Nadherny kopec');
 
 -- --------------------------------------------------------
 
@@ -418,6 +421,17 @@ CREATE TABLE `reviews_likes` (
   `user` int(11) NOT NULL,
   `random` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `reviews_likes`
+--
+
+INSERT INTO `reviews_likes` (`id`, `review`, `user`, `random`) VALUES
+(14, 1, 3, NULL),
+(15, 1, 5, NULL),
+(16, 24, 5, NULL),
+(17, 25, 5, NULL),
+(18, 25, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -448,8 +462,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `name`, `pass`, `email`, `description`, `authToken`, `pfp`, `theme`, `registered`, `lastLogin`, `forgotPassToken`, `verifyToken`, `isVerified`, `isAdmin`) VALUES
-(3, 'admin', 'MorpheusStathis', '$2b$10$sABad3z7gaU6CXaE6KuRruQO5431RMDvFPyoGXFuu8Vgjq251XlLq', 'jankubat77@gmail.com', NULL, 'ad8c6ca7-5348-45fb-b3dd-52a69c3d835e', NULL, NULL, '2022-11-25 07:01:02', '2022-11-27 12:22:31', NULL, '3d5a4e22-6380-402e-ad39-810a75e1b770', 1, 1),
-(4, 'test', 'test', '$2b$10$7cFsSR3AQw.Uzf8K/iR6IOPsACsVKeyliDOnp14JiIrxE3KJnEfym', 'jankubat.1@seznam.cz', NULL, '3feca689-9364-4fa9-b645-b002a56c0859', NULL, NULL, '2022-11-26 06:47:54', '0000-00-00 00:00:00', NULL, '13ed2c63-8226-478b-b87f-5f513cf86510', 0, 0);
+(3, 'admin', 'Morpheus Stathis', '$2b$10$sABad3z7gaU6CXaE6KuRruQO5431RMDvFPyoGXFuu8Vgjq251XlLq', 'jankubat77@gmail.com', 'vvvv', '5b2e139b-cd19-4059-9feb-519173dbd5d2', NULL, NULL, '2022-11-25 07:01:02', '2022-12-14 14:44:13', NULL, '3d5a4e22-6380-402e-ad39-810a75e1b770', 1, 1),
+(5, 'test', 'test', '$2b$10$EbCoyOgdGz0ofg/qnL0r5OAzEc0OzCFOHfn1DMGTHtZhfg0005UNC', 'test@test.cz', 'AHOOOJ', 'f1f3beeb-6d34-4893-99b5-55a4d2bc55e0', NULL, NULL, '2022-12-12 15:46:58', '2022-12-14 14:40:52', NULL, '8adaa9b5-47ac-428a-87d7-71e5420471cc', 1, 0);
 
 --
 -- Indexes for dumped tables
@@ -474,8 +488,8 @@ ALTER TABLE `discussions_replies`
 -- Indexes for table `discussions_replies_downvotes`
 --
 ALTER TABLE `discussions_replies_downvotes`
-  ADD KEY `discussions_replies_downVotes_discussion` (`discussion`),
-  ADD KEY `discussions_replies_downVotes_user` (`user`);
+  ADD KEY `discussions_replies_downVotes_user` (`user`),
+  ADD KEY `discussions_replies_downVotes_reply` (`reply`);
 
 --
 -- Indexes for table `discussions_replies_upvotes`
@@ -555,19 +569,19 @@ ALTER TABLE `discussions`
 -- AUTO_INCREMENT for table `discussions_replies`
 --
 ALTER TABLE `discussions_replies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `faults`
 --
 ALTER TABLE `faults`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `faults_likes`
 --
 ALTER TABLE `faults_likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `hills`
@@ -579,25 +593,25 @@ ALTER TABLE `hills`
 -- AUTO_INCREMENT for table `hills_climbed`
 --
 ALTER TABLE `hills_climbed`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `reviews_likes`
 --
 ALTER TABLE `reviews_likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -620,7 +634,7 @@ ALTER TABLE `discussions_replies`
 -- Constraints for table `discussions_replies_downvotes`
 --
 ALTER TABLE `discussions_replies_downvotes`
-  ADD CONSTRAINT `discussions_replies_downVotes_discussion` FOREIGN KEY (`discussion`) REFERENCES `discussions_replies` (`discussion`),
+  ADD CONSTRAINT `discussions_replies_downVotes_reply` FOREIGN KEY (`reply`) REFERENCES `discussions_replies` (`id`),
   ADD CONSTRAINT `discussions_replies_downVotes_user` FOREIGN KEY (`user`) REFERENCES `discussions_replies` (`user`);
 
 --
