@@ -59,6 +59,12 @@ router.post(`/update`, (req, res) => {
     });
 })
 
+router.post('/delete', (req, res) => {
+    let sql = `DELETE FROM users WHERE id='${req.body.userId}';`;
+
+    db.query(sql, () => res.sendStatus(200))
+})
+
 router.post(`/profile/upload`, upload.single('file'), (req, res) => {
     res.sendStatus(200);
 })
