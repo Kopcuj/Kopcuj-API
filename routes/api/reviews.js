@@ -21,6 +21,20 @@ router.get('/hills', (req, res) => {
     })
 })
 
+router.post('/update', (req, res) => {
+    let sql = `UPDATE reviews SET text='${req.body.text}' WHERE id='${req.body.reviewId}';`;
+
+    db.query(sql, () => {
+        res.sendStatus(200)
+    });
+})
+
+router.post('/delete', (req, res) => {
+    let sql = `DELETE FROM reviews WHERE id='${req.body.reviewId}';`;
+
+    db.query(sql, () => res.sendStatus(200))
+})
+
 router.get('/:hillId', (req, res) => {
     let sql = `SELECT reviews.* FROM reviews JOIN users ON users.id = reviews.user WHERE hill='${req.params.hillId}' ORDER BY added DESC;`;
     db.query(sql, (err, result) => {
