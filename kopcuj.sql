@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2022 at 05:13 PM
+-- Generation Time: Dec 19, 2022 at 05:14 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -35,15 +35,6 @@ CREATE TABLE `discussions` (
   `created` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `discussions`
---
-
-INSERT INTO `discussions` (`id`, `user`, `subject`, `text`, `created`) VALUES
-(5, 3, 'ahoj', 'tohle je test', '2022-11-27 09:54:42'),
-(6, 3, 'aaa', 'aaa', '2022-11-27 10:00:11'),
-(7, 3, 'aaa', 'aaaddd', '2022-11-27 10:00:16');
-
 -- --------------------------------------------------------
 
 --
@@ -57,14 +48,6 @@ CREATE TABLE `discussions_replies` (
   `created` timestamp NOT NULL DEFAULT current_timestamp(),
   `text` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `discussions_replies`
---
-
-INSERT INTO `discussions_replies` (`id`, `discussion`, `user`, `created`, `text`) VALUES
-(12, 5, 3, '2022-12-14 16:05:40', 'test'),
-(13, 5, 3, '2022-12-14 16:06:00', 'test2');
 
 -- --------------------------------------------------------
 
@@ -89,13 +72,6 @@ CREATE TABLE `discussions_replies_upvotes` (
   `user` int(11) NOT NULL,
   `random` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `discussions_replies_upvotes`
---
-
-INSERT INTO `discussions_replies_upvotes` (`reply`, `user`, `random`) VALUES
-(5, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -263,13 +239,13 @@ CREATE TABLE `hills_attributes` (
 --
 
 INSERT INTO `hills_attributes` (`hill`, `difficulty`, `path`, `stroller`, `parking`, `food`) VALUES
-(1, 2, 1, 1, 1, 1),
+(1, 0, 0, 0, 0, 0),
 (2, 0, 0, 0, 0, 0),
 (3, 0, 0, 0, 0, 0),
 (4, 0, 0, 0, 0, 0),
-(5, 7, 7, 7, 7, 7),
+(5, 0, 0, 0, 0, 0),
 (6, 0, 0, 0, 0, 0),
-(7, 1, 0, 0, 0, 1),
+(7, 0, 0, 0, 0, 0),
 (8, 0, 0, 0, 0, 0),
 (9, 0, 0, 0, 0, 0),
 (10, 0, 0, 0, 0, 0),
@@ -281,11 +257,11 @@ INSERT INTO `hills_attributes` (`hill`, `difficulty`, `path`, `stroller`, `parki
 (16, 0, 0, 0, 0, 0),
 (17, 0, 0, 0, 0, 0),
 (18, 0, 0, 0, 0, 0),
-(19, 0, 1, 0, 0, 0),
+(19, 0, 0, 0, 0, 0),
 (20, 0, 0, 0, 0, 0),
 (21, 0, 0, 0, 0, 0),
 (22, 0, 0, 0, 0, 0),
-(23, 12, 12, 12, 12, 12),
+(23, 0, 0, 0, 0, 0),
 (24, 0, 0, 0, 0, 0),
 (25, 0, 0, 0, 0, 0),
 (26, 0, 0, 0, 0, 0),
@@ -309,7 +285,7 @@ INSERT INTO `hills_attributes` (`hill`, `difficulty`, `path`, `stroller`, `parki
 (44, 0, 0, 0, 0, 0),
 (45, 0, 0, 0, 0, 0),
 (46, 0, 0, 0, 0, 0),
-(47, 0, 1, 1, 1, 1),
+(47, 0, 0, 0, 0, 0),
 (48, 0, 0, 0, 0, 0),
 (49, 0, 0, 0, 0, 0),
 (50, 0, 0, 0, 0, 0),
@@ -370,17 +346,6 @@ CREATE TABLE `hills_climbed` (
   `user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `hills_climbed`
---
-
-INSERT INTO `hills_climbed` (`id`, `hill`, `user`) VALUES
-(2, 1, 3),
-(3, 49, 4),
-(4, 1, 4),
-(5, 1, 5),
-(6, 47, 5);
-
 -- --------------------------------------------------------
 
 --
@@ -396,19 +361,6 @@ CREATE TABLE `reviews` (
   `text` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `reviews`
---
-
-INSERT INTO `reviews` (`id`, `hill`, `user`, `added`, `stars`, `text`) VALUES
-(1, 1, 3, '2022-11-25 07:18:24', 2, 'N2jaky text aspon'),
-(15, 1, 4, '2022-11-26 11:07:48', 1, 'fffff'),
-(21, 23, 3, '2022-11-30 16:25:23', 1, ''),
-(22, 7, 3, '2022-11-30 16:50:22', 0, ''),
-(23, 19, 3, '2022-11-30 16:51:15', 4, ''),
-(24, 1, 5, '2022-12-14 15:41:36', 4, 'slo to'),
-(25, 47, 5, '2022-12-14 15:42:00', 5, 'Nadherny kopec');
-
 -- --------------------------------------------------------
 
 --
@@ -421,17 +373,6 @@ CREATE TABLE `reviews_likes` (
   `user` int(11) NOT NULL,
   `random` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `reviews_likes`
---
-
-INSERT INTO `reviews_likes` (`id`, `review`, `user`, `random`) VALUES
-(14, 1, 3, NULL),
-(15, 1, 5, NULL),
-(16, 24, 5, NULL),
-(17, 25, 5, NULL),
-(18, 25, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -462,8 +403,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `name`, `pass`, `email`, `description`, `authToken`, `pfp`, `theme`, `registered`, `lastLogin`, `forgotPassToken`, `verifyToken`, `isVerified`, `isAdmin`) VALUES
-(3, 'admin', 'Morpheus Stathis', '$2b$10$sABad3z7gaU6CXaE6KuRruQO5431RMDvFPyoGXFuu8Vgjq251XlLq', 'jankubat77@gmail.com', 'vvvv', '5b2e139b-cd19-4059-9feb-519173dbd5d2', NULL, NULL, '2022-11-25 07:01:02', '2022-12-14 14:44:13', NULL, '3d5a4e22-6380-402e-ad39-810a75e1b770', 1, 1),
-(5, 'test', 'test', '$2b$10$EbCoyOgdGz0ofg/qnL0r5OAzEc0OzCFOHfn1DMGTHtZhfg0005UNC', 'test@test.cz', 'AHOOOJ', 'f1f3beeb-6d34-4893-99b5-55a4d2bc55e0', NULL, NULL, '2022-12-12 15:46:58', '2022-12-14 14:40:52', NULL, '8adaa9b5-47ac-428a-87d7-71e5420471cc', 1, 0);
+(0, 'admin', 'admin', '$2b$10$dLQFjRtTg67lDaP5JEcLou2EDbU9aDbcexdXY71sqUh0tGBUt9BlW', 'admin@admin', NULL, 'c0a47213-9221-415c-ad40-df3c1bc29b72', NULL, NULL, '2022-12-19 16:11:46', '2022-12-19 15:11:51', NULL, '325bd900-154d-4d69-b9e5-c3878eafded7', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -488,14 +428,15 @@ ALTER TABLE `discussions_replies`
 -- Indexes for table `discussions_replies_downvotes`
 --
 ALTER TABLE `discussions_replies_downvotes`
-  ADD KEY `discussions_replies_downVotes_user` (`user`),
-  ADD KEY `discussions_replies_downVotes_reply` (`reply`);
+  ADD KEY `discussions_replies_downVotes_reply` (`reply`),
+  ADD KEY `discussions_replies_downVotes_user` (`user`);
 
 --
 -- Indexes for table `discussions_replies_upvotes`
 --
 ALTER TABLE `discussions_replies_upvotes`
-  ADD KEY `discussions_replies_upVotes_user` (`user`);
+  ADD KEY `discussions_replies_upVotes_user` (`user`),
+  ADD KEY `discussions_replies_upVotes_reply` (`reply`);
 
 --
 -- Indexes for table `faults`
@@ -563,13 +504,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `discussions`
 --
 ALTER TABLE `discussions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `discussions_replies`
 --
 ALTER TABLE `discussions_replies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `faults`
@@ -593,25 +534,25 @@ ALTER TABLE `hills`
 -- AUTO_INCREMENT for table `hills_climbed`
 --
 ALTER TABLE `hills_climbed`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews_likes`
 --
 ALTER TABLE `reviews_likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -635,13 +576,14 @@ ALTER TABLE `discussions_replies`
 --
 ALTER TABLE `discussions_replies_downvotes`
   ADD CONSTRAINT `discussions_replies_downVotes_reply` FOREIGN KEY (`reply`) REFERENCES `discussions_replies` (`id`),
-  ADD CONSTRAINT `discussions_replies_downVotes_user` FOREIGN KEY (`user`) REFERENCES `discussions_replies` (`user`);
+  ADD CONSTRAINT `discussions_replies_downVotes_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `discussions_replies_upvotes`
 --
 ALTER TABLE `discussions_replies_upvotes`
-  ADD CONSTRAINT `discussions_replies_upVotes_user` FOREIGN KEY (`user`) REFERENCES `discussions_replies` (`user`);
+  ADD CONSTRAINT `discussions_replies_upVotes_reply` FOREIGN KEY (`reply`) REFERENCES `discussions_replies` (`id`),
+  ADD CONSTRAINT `discussions_replies_upVotes_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `faults`
