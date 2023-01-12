@@ -173,7 +173,7 @@ router.get("/verify/:token", (req, res) => {
         let sql = `UPDATE users SET isVerified=true WHERE id=${r[0].id};`;
 
         db.query(sql, () => res.redirect('http://localhost:3000'));
-    }).catch(() => console.log("Verification Error"));
+    })
 })
 
 
